@@ -1,0 +1,47 @@
+import time
+import random
+
+# Define traffic nodes and initial vehicle count at each signal
+traffic_nodes = {
+    "n1": [random.randint(5, 20) for _ in range(4)],  # Vehicles from 4 directions
+    "n2": [random.randint(5, 20) for _ in range(4)],
+    "n3": [random.randint(5, 20) for _ in range(4)],
+    "n4": [random.randint(5, 20) for _ in range(4)],
+}
+
+# Function to calculate the total waiting time at a node
+def calculate_waiting_time(node_traffic):
+    return sum(node_traffic)
+
+# Function to decide which direction gets the green signal
+def decide_green_signal(node_traffic):
+    # Priority given to the direction with the most vehicles
+    return node_traffic.index(max(node_traffic))
+
+# Simulate traffic light management
+def traffic_light_simulation(nodes, simulation_time=30):
+    print("Starting traffic light simulation...\n")
+    
+    for _ in range(simulation_time):
+        for node, traffic in nodes.items():
+            # Calculate waiting times and decide green signal
+            waiting_time = calculate_waiting_time(traffic)
+            green_signal = decide_green_signal(traffic)
+
+            print(f"Node: {node}")
+            print(f"Traffic count (N, E, S, W): {traffic}")
+            print(f"Green signal: Direction {green_signal + 1}")
+            
+            # Simulate traffic passing during the green signal
+            vehicles_cleared = min(traffic[green_signal], 10)  # Clear up to 10 vehicles
+            traffic[green_signal] -= vehicles_cleared
+            
+            print(f"Vehicles cleared: {vehicles_cleared}")
+            print(f"Updated traffic: {traffic}")
+            print(f"Total waiting time: {waiting_time}\n")
+            
+            # Simulate time delay for the green signal
+            time.sleep(1)
+
+# Run the simulation 
+traffic_light_simulation(traffic_nodes)
